@@ -1,0 +1,48 @@
+﻿@page "/category-scores"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using TriviaGame.Models
+
+<PageTitle>Category scores</PageTitle>
+
+<div class="pageContent">
+
+    <!-- Category highscores -->
+    <div id="scoreText">
+        <dl>
+            <dt>General knowledge</dt>
+            <dd>@generalKnowledgeHighscore</dd>
+        </dl>
+        <dl>
+            <dt>Gaming</dt>
+            <dd>@gamingTriviaHighscore</dd>
+        </dl>
+    </div>
+
+    <!-- Back to menu button -->
+    <NavLink class="menuLink" href="/">
+        <div class="menuBox">
+            <div class="menuBoxText">Back to menu</div>
+        </div>
+    </NavLink>
+
+    <!--<div class="menuBox">
+         <div class="menuBoxText" @onclick="(() => Clear())">Clear</div>
+    </div>-->
+
+</div>
+
+@code {
+    private string? generalKnowledgeHighscore;
+    private string? gamingTriviaHighscore;
+
+    protected override async Task OnInitializedAsync()
+    {
+        generalKnowledgeHighscore = await localStorage.GetItemAsync<String>($"highScore_generalKnowledgeTrivia");
+        gamingTriviaHighscore = await localStorage.GetItemAsync<String>($"highScore_gamingTrivia");
+    }
+}
+
+
+
+
+

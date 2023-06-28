@@ -1,0 +1,199 @@
+﻿@page "/gameplay"
+@inject TriviaScore TriviaScore
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+@if (usedQuestionIndices.Count < totalQuestions && lives > 0)
+{
+    // Question box
+    <div id="questionBox">
+        <div id="questionNumber">Question @questionNumber</div>
+        <div id="questionText">@triviaQuestionData[currentQuestionIndex].Question</div>
+    </div>
+
+    // Timer and lives
+    <div id="timerAndLivesBox">
+        <div id="timer">Time left: @timeLeft</div>
+        <div id="lives">Lives: @lives</div>
+    </div>
+
+    // Choice boxes and functionality
+    <div class="choices">
+        @foreach (var choice in triviaQuestionData[currentQuestionIndex].Choices)
+        {
+            var i = triviaQuestionData[currentQuestionIndex].Choices.ToList().IndexOf(choice);
+            <div class='@(selectedChoiceIndex == i ? "selected" : "") 
+                        @(isAnswerLocked && selectedChoiceIndex == i && i == triviaQuestionData[currentQuestionIndex].CorrectChoice ? "correct" : "") 
+                        @(isAnswerLocked && selectedChoiceIndex == i && i != triviaQuestionData[currentQuestionIndex].CorrectChoice ? "incorrect" : "") 
+                        @(isAnswerLocked ? "disabled" : "")'
+                        data-choice-index="@i"
+                        @onclick="(() => CheckAnswer(i))">
+                        @choice
+            </div>
+        }
+    </div>
+}
+else
+{
+    // Redirect to results page if 0 lives are left or if there are no more questions
+    NavigationManager.NavigateTo("/results");
+}
+
+@code {
+    private Random random = new Random();
+    private System.Threading.Timer? timer;
+
+    private int questionNumber = 1;
+    private int currentQuestionIndex = 0;
+    private List<int> usedQuestionIndices = new List<int>();
+
+    [Parameter]
+    public TriviaQuestion[]? triviaQuestionData { get; set; }
+
+    private int totalQuestions;
+    private int? selectedChoiceIndex = null;
+    private bool isAnswerLocked = false;
+
+    private int timeLeft = 15;
+    private int lives = 3;
+
+
+    // Start timer when loading this page
+    protected override void OnInitialized() 
+    {
+        StartTimer();
+        SelectFirstQuestion();
+        RandomizeQuestionOrder();
+        TriviaScore.Score = 0;
+        if (triviaQuestionData is not null)
+        {
+            totalQuestions = triviaQuestionData.Length;
+        }
+
+    }
+
+    // Initialize highscore on loading this page if it is null
+    protected override async Task OnInitializedAsync()
+    {
+        await InitializeHighscore("generalKnowledgeTrivia");
+    }
+
+    // Initialize highscore to avoid ArgumentNullException
+    private async Task InitializeHighscore(string pageId)
+    {
+        var highScoreKey = $"highScore_{pageId}";
+        if (await localStorage.GetItemAsync<string>(highScoreKey) is null)
+        {
+            await localStorage.SetItemAsync(highScoreKey, 0);
+        }
+    }
+
+    // Start timer
+    // Lose lives if timer reaches 0
+    private void StartTimer() 
+    {
+        timer = new System.Threading.Timer(state =>
+        {
+            if (timeLeft > 0)
+            {
+                timeLeft--;
+            }
+            else
+            {
+                LockAnswer(null);
+                lives--;
+            }
+            StateHasChanged();
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
+
+    // Reset timer
+    private void ResetTimer()
+    {
+        timer?.Dispose();
+        timeLeft = 15;
+    }
+
+    // Check if answer is correct 
+    // Lose lives if incorrect
+    // Increment score
+    private void CheckAnswer(int choiceIndex)
+    {
+        if (isAnswerLocked)
+        {
+            return;
+        }
+
+        selectedChoiceIndex = choiceIndex;
+
+        if (triviaQuestionData is not null)
+        {
+            if (selectedChoiceIndex != triviaQuestionData[currentQuestionIndex].CorrectChoice)
+            {
+                lives--;
+            }
+        }
+        LockAnswer(selectedChoiceIndex);
+
+        TriviaScore.Score++;
+    }
+
+    // Lock answer 
+    // Reset timer
+    // Show next question after 1 sec
+    private void LockAnswer(int? choiceIndex)
+    {
+        isAnswerLocked = true;
+        ResetTimer();
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            NextQuestion();
+        });
+    }
+
+    // Randomize the order of questions
+    private void RandomizeQuestionOrder()
+    {
+        if (triviaQuestionData is not null)
+        {
+            for (int i = triviaQuestionData.Length - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (triviaQuestionData[j], triviaQuestionData[i]) = (triviaQuestionData[i], triviaQuestionData[j]);
+            }
+        }
+    }
+
+    // Make first question in the order random
+    private void SelectFirstQuestion()
+    {
+        int firstQuestionIndex = random.Next(totalQuestions);
+        currentQuestionIndex = firstQuestionIndex;
+        usedQuestionIndices.Add(currentQuestionIndex);
+    }
+
+    // Show next question if there are more questions and lives left
+    // Increment currentQuestionIndex for the text "Question X" above questions
+    // Increment questionNumber to get the next question in array
+    private void NextQuestion()
+    {
+        if (usedQuestionIndices.Count < totalQuestions && lives > 0)
+        {
+            int nextQuestionIndex;
+            do
+            {
+                nextQuestionIndex = random.Next(totalQuestions);
+            } while (usedQuestionIndices.Contains(nextQuestionIndex));
+
+            currentQuestionIndex = nextQuestionIndex;
+            questionNumber++;
+            isAnswerLocked = false;
+            selectedChoiceIndex = null;
+            usedQuestionIndices.Add(currentQuestionIndex);
+
+            StartTimer();
+        }
+    }
+}

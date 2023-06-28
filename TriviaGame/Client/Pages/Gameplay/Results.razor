@@ -1,0 +1,64 @@
+﻿@page "/results"
+@inject TriviaScore TriviaScore
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<PageTitle>Results</PageTitle>
+
+<div class="pageContent">
+
+    <!-- Quiz result title -->
+    <h1 id="resultTitle">Quiz Result</h1>
+    <!-- Quiz result text -->
+    <p class="resultText">You made it through @TriviaScore.Score questions!</p>
+    <p class="resultText">Your highscore is @TriviaScore.Highscore.</p>
+
+    <!-- Play again button -->
+    <NavLink class="menuLink" href="/category-picker">
+        <div class="menuBox">
+            <div class="menuBoxText">Play again</div>
+        </div>
+    </NavLink>
+
+    <!-- Back to menu button -->
+    <NavLink class="menuLink" href="/">
+        <div class="menuBox">
+            <div class="menuBoxText">Back to menu</div>
+        </div>
+    </NavLink>
+
+</div>
+ 
+@code {
+    private string? pageId;
+
+    // Update highscore and read it when loading this page
+    protected override async Task OnInitializedAsync()
+    {
+        pageId = await localStorage.GetItemAsync<string>("lastPageId");
+        await UpdateHighscore(TriviaScore.Score, pageId);
+        await ReadHighscore(pageId); 
+    }
+
+    // Update highscore in localStorage if it is higher than previous highscore
+    private async Task UpdateHighscore(int newHighscore, string pageId)
+    {
+        var highScoreKey = $"highScore_{pageId}";
+        var highScore = Int32.Parse(await localStorage.GetItemAsync<string>(highScoreKey));
+
+        if (newHighscore > highScore)
+        {
+            await localStorage.SetItemAsync(highScoreKey, newHighscore);
+        }
+    }
+
+    // Read highscore from localStorage
+    // Cannot use the index one, because then it doesn't update before loading page
+    private async Task ReadHighscore(string pageId)
+    {
+        var highScoreKey = $"highScore_{pageId}";
+        var highscore = await localStorage.GetItemAsync<string>(highScoreKey);
+        TriviaScore.Highscore = Int32.Parse(highscore);
+    }
+}
+

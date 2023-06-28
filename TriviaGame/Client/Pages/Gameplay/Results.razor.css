@@ -1,0 +1,10 @@
+﻿/* Result CSS */
+#resultTitle {
+    font-size: 3rem;
+    text-align: center;
+}
+
+.resultText {
+    font-size: 1.5rem;
+    text-align: center;
+}

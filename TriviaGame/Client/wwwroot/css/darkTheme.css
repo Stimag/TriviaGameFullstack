@@ -1,0 +1,55 @@
+﻿html, body {
+    background-color: #000220;
+}
+
+.menuBoxText {
+    color: white;
+}
+
+.gameInfoTitle {
+    color: white;
+}
+
+.gameInfoText {
+    color: white;
+}
+
+#questionBox {
+    color: white;
+}
+
+#questionText {
+    color: white;
+}
+
+#questionNumber {
+    color: white;
+}
+
+#scoreText {
+    color: white;
+}
+
+#timer {
+    color: white;
+}
+
+#lives {
+    color: white;
+}
+
+.choices {
+    color: white;
+}
+
+#resultTitle {
+    color: white;
+}
+
+.resultText {
+    color: white;
+}
+
+#styleTogglerText {
+    color: white;
+}

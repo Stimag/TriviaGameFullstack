@@ -1,0 +1,19 @@
+﻿/* Game information CSS */
+.gameInfoTitle {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0.5rem 0 0.5rem 0;
+    text-align: center;
+}
+
+.gameInfoText {
+    width: 25rem;
+    text-align: center;
+}
+
+/* Responsive CSS */
+@media (max-width: 500px) {
+    .gameInfoText {
+        width: 15rem;
+    }
+}

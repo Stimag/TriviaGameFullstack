@@ -1,0 +1,358 @@
+﻿@page "/generalKnowledgeTrivia"
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<PageTitle>General knowledge trivia</PageTitle>
+<Gameplay triviaQuestionData="generalKnowledgeQuestions" />
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var pageId = "generalKnowledgeTrivia"; 
+        await localStorage.SetItemAsync("lastPageId", pageId);
+
+        // Randomize choices
+        Random random = new Random();
+        foreach (var question in generalKnowledgeQuestions)
+        {
+            // Shuffle choices
+            for (int i = question.Choices.Length - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (question.Choices[j], question.Choices[i]) = (question.Choices[i], question.Choices[j]);
+
+                // Update the correct choice index if it is affected by shuffling
+                if (question.CorrectChoice == i)
+                {
+                    question.CorrectChoice = j;
+                }
+                else if (question.CorrectChoice == j)
+                {
+                    question.CorrectChoice = i;
+                }
+            }
+        }
+    }
+    
+    private TriviaQuestion[] generalKnowledgeQuestions = new TriviaQuestion[]
+    {
+        new TriviaQuestion
+        {
+            Question = "What is the chemical symbol for silver?",
+            Choices = new[] { "S", "Ag", "Si", "Au" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the largest planet in our solar system?",
+            Choices = new[] { "Mercury", "Saturn", "Venus", "Jupiter" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known as the Land of the Rising Sun?",
+            Choices = new[] { "Japan", "China", "South Korea", "Thailand" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which artist painted the Mona Lisa?",
+            Choices = new[] { "Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the capital city of Australia?",
+            Choices = new[] { "Sydney", "Melbourne", "Canberra", "Perth" },
+            CorrectChoice = 2
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical symbol for gold?",
+            Choices = new[] { "Go", "Au", "Ag", "Gd" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which planet is known as the Red Planet?",
+            Choices = new[] { "Mars", "Jupiter", "Neptune", "Uranus" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who wrote the play Romeo and Juliet?",
+            Choices = new[] { "William Shakespeare", "Arthur Miller", "George Orwell", "Jane Austen" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the tallest mountain in the world?",
+            Choices = new[] { "Mount Kilimanjaro", "Mount Everest", "Mount Fuji", "Mount McKinley" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which animal is known as the king of the jungle?",
+            Choices = new[] { "Tiger", "Lion", "Elephant", "Gorilla" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which is the largest ocean in the world?",
+            Choices = new[] { "Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Who painted the famous artwork The Starry Night?",
+            Choices = new[] { "Pablo Picasso", "Claude Monet", "Vincent van Gogh", "Salvador Dalí" },
+            CorrectChoice = 2
+        },
+        new TriviaQuestion
+        {
+            Question = "Which instrument has 88 keys?",
+            Choices = new[] { "Accordion", "Piano", "Keyboard", "Percussion" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which planet is known for its beautiful rings?",
+            Choices = new[] { "Saturn", "Uranus", "Jupiter", "Mars" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who invented the telephone?",
+            Choices = new[] { "Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Albert Einstein" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the national bird of the United States?",
+            Choices = new[] { "Bald Eagle", "Peacock", "Flamingo", "Swan" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known for producing the most coffee in the world?",
+            Choices = new[] { "Brazil", "Colombia", "Vietnam", "Ethiopia" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the largest organ in the human body?",
+            Choices = new[] { "Heart", "Brain", "Liver", "Skin" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Which planet is known as the Evening Star or Morning Star?",
+            Choices = new[] { "Venus", "Mars", "Saturn", "Jupiter" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who is the author of the Harry Potter book series?",
+            Choices = new[] { "J.K. Rowling", "Stephen King", "George R.R. Martin", "Dan Brown" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical formula for water?",
+            Choices = new[] { "H2O", "CO2", "NaCl", "O2" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which is the smallest continent in the world?",
+            Choices = new[] { "Asia", "Africa", "Europe", "Australia" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Who painted the famous artwork The Last Supper?",
+            Choices = new[] { "Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh", "Michelangelo" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known for the Taj Mahal?",
+            Choices = new[] { "India", "China", "Egypt", "Italy" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical symbol for iron?",
+            Choices = new[] { "Ir", "Fe", "In", "Io" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which animal is known as the fastest land animal?",
+            Choices = new[] { "Lion", "Cheetah", "Gazelle", "Leopard" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the currency of Japan?",
+            Choices = new[] { "Yen", "Dollar", "Euro", "Pound" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which is the largest desert in the world?",
+            Choices = new[] { "Sahara Desert", "Gobi Desert", "Arabian Desert", "Kalahari Desert" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which is the longest river in the world?",
+            Choices = new[] { "Nile River", "Amazon River", "Mississippi River", "Yangtze River" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who painted the famous artwork The Scream?",
+            Choices = new[] { "Pablo Picasso", "Edvard Munch", "Salvador Dalí", "Vincent van Gogh" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known for the Great Wall?",
+            Choices = new[] { "China", "France", "Italy", "Mexico" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical symbol for sodium?",
+            Choices = new[] { "S", "Sn", "So", "Na" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Who is the current President of the United States (2023)?",
+            Choices = new[] { "Joe Biden", "Donald Trump", "Barack Obama", "George W. Bush" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the largest species of shark?",
+            Choices = new[] { "Great White Shark", "Whale Shark", "Tiger Shark", "Hammerhead Shark" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Who wrote the novel To Kill a Mockingbird?",
+            Choices = new[] { "Harper Lee", "F. Scott Fitzgerald", "John Steinbeck", "Toni Morrison" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the capital city of France?",
+            Choices = new[] { "Paris", "Rome", "London", "Berlin" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which planet is known as the Blue Planet?",
+            Choices = new[] { "Earth", "Mars", "Neptune", "Uranus" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical symbol for carbon?",
+            Choices = new[] { "Ca", "Cr", "Co", "C" },
+            CorrectChoice = 3
+        },
+        new TriviaQuestion
+        {
+            Question = "Which is the highest-grossing film of all time?",
+            Choices = new[] { "Avengers: Endgame", "Avatar", "Titanic", "Star Wars: The Force Awakens" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Who wrote the play Hamlet?",
+            Choices = new[] { "William Shakespeare", "Oscar Wilde", "Tennessee Williams", "Anton Chekhov" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the national animal of Canada?",
+            Choices = new[] { "Moose", "Beaver", "Polar Bear", "Bald Eagle" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known for the Pyramids of Giza?",
+            Choices = new[] { "Egypt", "Greece", "India", "Mexico" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known as the 'Land of the Midnight Sun'?",
+            Choices = new[] { "Norway", "Sweden", "Finland", "Russia" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the largest ocean predator?",
+            Choices = new[] { "Killer Whale", "Great White Shark", "Blue Whale", "Giant Squid" },
+            CorrectChoice = 2
+        },
+        new TriviaQuestion
+        {
+            Question = "Who is the author of the novel To Kill a Mockingbird?",
+            Choices = new[] { "Harper Lee", "F. Scott Fitzgerald", "J.D. Salinger", "John Steinbeck" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the chemical formula for table salt?",
+            Choices = new[] { "H2O", "CO2", "NaCl", "O2" },
+            CorrectChoice = 2
+        },
+        new TriviaQuestion
+        {
+            Question = "Which country is known for inventing tea?",
+            Choices = new[] { "China", "India", "Japan", "England" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who wrote the novel Moby-Dick?",
+            Choices = new[] { "Herman Melville", "Mark Twain", "Emily Dickinson", "F. Scott Fitzgerald" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "What is the capital city of Canada?",
+            Choices = new[] { "Toronto", "Ottawa", "Vancouver", "Montreal" },
+            CorrectChoice = 1
+        },
+        new TriviaQuestion
+        {
+            Question = "Which planet is known as the Blue Planet?",
+            Choices = new[] { "Mars", "Jupiter", "Earth", "Uranus" },
+            CorrectChoice = 2
+        },
+        new TriviaQuestion
+        {
+            Question = "Who is the author of the novel The Great Gatsby?",
+            Choices = new[] { "F. Scott Fitzgerald", "Ernest Hemingway", "Virginia Woolf", "George Orwell" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Which animal is known as the 'Ship of the Desert'?",
+            Choices = new[] { "Camel", "Horse", "Elephant", "Lion" },
+            CorrectChoice = 0
+        },
+        new TriviaQuestion
+        {
+            Question = "Who painted the famous artwork The Birth of Venus?",
+            Choices = new[] { "Leonardo da Vinci", "Raphael", "Sandro Botticelli", "Rembrandt" },
+            CorrectChoice = 2
+        },
+    };
+}

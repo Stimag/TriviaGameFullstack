@@ -1,0 +1,55 @@
+﻿html, body {
+    background-color: #DCEFFB;
+}
+
+.menuBoxText {
+    color: black;
+}
+
+.gameInfoTitle {
+    color: black;
+}
+
+.gameInfoText {
+    color: black;
+}
+
+#questionBox {
+    color: black;
+}
+
+#questionText {
+    color: black;
+}
+
+#questionNumber {
+    color: black;
+}
+
+#scoreText {
+    color: black;
+}
+
+#timer {
+    color: black;
+}
+
+#lives {
+    color: black;
+}
+
+.choices {
+    color: black;
+}
+
+#resultTitle {
+    color: black;
+}
+
+.resultText {
+    color: black;
+}
+
+#styleTogglerText {
+    color: black;
+}

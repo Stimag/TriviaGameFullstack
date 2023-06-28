@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+<head>
+    <title>Blazor App</title>
+    <!-- other head content -->
+    @if (selectedStyle == "darkTheme.css")
+    {
+        <link rel="stylesheet" href="css/darkTheme.css" />
+    }
+    else if (selectedStyle == "lightTheme.css")
+    {
+        <link rel="stylesheet" href="css/lightTheme.css" />
+    }
+</head>
+
+
+<div class="page">
+    <main>
+        <article class="content px-4">
+            @Body
+            <div id="styleTogglerContainer">
+                <div id="styleTogglerText">Dark/light mode</div>
+
+                <label class="switch">
+                    <input type="checkbox" @onclick="ToggleStyle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </article>
+    </main>
+</div>
+
+
+@code {
+    private string selectedStyle = "darkTheme.css";
+
+    public void ToggleStyle()
+    {
+        if (selectedStyle == "darkTheme.css")
+            selectedStyle = "lightTheme.css";
+        else
+            selectedStyle = "darkTheme.css";
+    }
+}
