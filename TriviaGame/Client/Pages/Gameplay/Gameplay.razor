@@ -23,9 +23,9 @@
     <div class="choices">
         @foreach (var choice in currentQuestion.TriviaChoices)
         {
-            <div class='@(isAnswered && userChoice == choice ? (choice.IsCorrect == "Y" ? "correct" : "incorrect") : "")                        
+            <div class='@(isAnswered && userChoice == choice ? (choice.IsCorrect == "Y" ? "correct" : "incorrect") : "")             
                         @(isAnswered ? "disabled" : "")'
-                        @onclick="() => CheckAnswer(choice)">
+                        @onclick="(() => CheckAnswer(choice))">
                         @choice.ChoiceText
             </div>
         }
@@ -116,13 +116,17 @@ else
     // Check if answer is locked in and load next question if it is
     private void CheckAnswer(TriviaChoice? choice)
     {
-        userChoice = choice;
-
         if (!isAnswered)
         {
             isAnswered = true;
-            ResetTimer();  
+            ResetTimer();
+        } 
+        else
+        {
+            return; // Disables choices properly when answer is locked
         }
+
+        userChoice = choice; // Used for styling correct/incorrect choices correctly 
 
         if (choice is not null && choice.IsCorrect == "N")
         {

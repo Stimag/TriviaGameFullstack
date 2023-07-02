@@ -21,7 +21,7 @@ namespace TriviaGame.Server.Controllers
         {
             var randomQuestions = _context.TriviaQuestions
                 .Include(q => q.TriviaChoices)
-                .Where(q => q.Topic.TopicName == topic) 
+                .Where(t => t.Topic.TopicName == topic) 
                 .OrderBy(q => Guid.NewGuid())
                 .ToList();
 
