@@ -15,22 +15,6 @@ namespace TriviaGame.Server.Controllers
             _context = context;
         }
 
-        // Get all trivia topics
-        [HttpGet("topics")]
-        public async Task<ActionResult<List<TriviaTopic>>> GetTriviaTopics()
-        {
-            var topics = await _context.TriviaTopics.ToListAsync();
-            return Ok(topics);
-        }
-
-        // Get all trivia questions
-        [HttpGet("questions")]
-        public async Task<ActionResult<List<TriviaQuestion>>> GetTriviaQuestions()
-        {
-            var questions = await _context.TriviaQuestions.Include(c => c.TriviaChoices).ToListAsync();
-            return Ok(questions);
-        }
-
         // Get random trivia questions
         [HttpGet("randomquestions/{topic}")]
         public ActionResult<List<TriviaQuestion>> GetRandomQuestions(string topic)
@@ -47,16 +31,6 @@ namespace TriviaGame.Server.Controllers
             }
 
             return randomQuestions;
-        }
-
-
-
-        // Get all choices 
-        [HttpGet("choices")]
-        public async Task<ActionResult<List<TriviaChoice>>> GetTriviaChoices()
-        {
-            var choices = await _context.TriviaChoices.ToListAsync();
-            return Ok(choices);
         }
     }
 }
