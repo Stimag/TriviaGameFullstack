@@ -1,5 +1,4 @@
 ﻿@page "/results"
-@inject TriviaScore TriviaScore
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 
@@ -10,8 +9,8 @@
     <!-- Quiz result title -->
     <h1 id="resultTitle">Quiz Result</h1>
     <!-- Quiz result text -->
-    <p class="resultText">You made it through @TriviaScore.Score questions!</p>
-    <p class="resultText">Your highscore is @TriviaScore.Highscore.</p>
+    <p class="resultText">You made it through </p>
+    <p class="resultText">Your highscore is </p>
 
     <!-- Play again button -->
     <NavLink class="menuLink" href="/topic-picker">
@@ -35,30 +34,20 @@
     // Update highscore and read it when loading this page
     protected override async Task OnInitializedAsync()
     {
-        pageId = await localStorage.GetItemAsync<string>("lastPageId");
-        await UpdateHighscore(TriviaScore.Score, pageId);
-        await ReadHighscore(pageId); 
+        
     }
 
     // Update highscore in localStorage if it is higher than previous highscore
     private async Task UpdateHighscore(int newHighscore, string pageId)
     {
-        var highScoreKey = $"highScore_{pageId}";
-        var highScore = Int32.Parse(await localStorage.GetItemAsync<string>(highScoreKey));
-
-        if (newHighscore > highScore)
-        {
-            await localStorage.SetItemAsync(highScoreKey, newHighscore);
-        }
+        
     }
 
     // Read highscore from localStorage
     // Cannot use the index one, because then it doesn't update before loading page
     private async Task ReadHighscore(string pageId)
     {
-        var highScoreKey = $"highScore_{pageId}";
-        var highscore = await localStorage.GetItemAsync<string>(highScoreKey);
-        TriviaScore.Highscore = Int32.Parse(highscore);
+      
     }
 }
 

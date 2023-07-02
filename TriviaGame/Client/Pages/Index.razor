@@ -1,6 +1,5 @@
 ﻿@page "/"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject TriviaScore TriviaScore
 @inject TriviaService triviaService
 
 <PageTitle>Trivia game</PageTitle>
@@ -22,34 +21,22 @@
     </NavLink> 
 
     <!-- Personal statistics button -->
-    <NavLink class="menuLink" href="/category-scores">
+    <NavLink class="menuLink" href="/topic-scores">
         <div class="menuBox"> 
-            <div class="menuBoxText">Category scores</div>
+            <div class="menuBoxText">Topic scores</div>
         </div>
     </NavLink>
 
 </div>
 
 @code {
-    // Initialize highScores if they are null
-    // Read highscore on loading first page, used for category scores
+ 
     protected override async Task OnInitializedAsync()
     {
-        if (await localStorage.GetItemAsync<string>("highScore_generalKnowledgeTrivia") is null ||
-            await localStorage.GetItemAsync<string>("highScore_gamingTrivia") is null)
-        {
-            await localStorage.SetItemAsync("highScore_generalKnowledgeTrivia", 0);
-            await localStorage.SetItemAsync("highScore_gamingTrivia", 0);
-        }
-        
-        await ReadHighscore();
+       
     }
     
 
     
-    public async Task ReadHighscore()
-    {
-        var highscore = await localStorage.GetItemAsync<string>("highScore_generalKnowledgeTrivia");
-        TriviaScore.Highscore = Int32.Parse(highscore);
-    }
+
 }

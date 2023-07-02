@@ -1,20 +1,19 @@
-﻿@page "/category-scores"
+﻿@page "/topic-scores"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@using TriviaGame.Client.Model
 
-<PageTitle>Category scores</PageTitle>
+<PageTitle>Topic scores</PageTitle>
 
 <div class="pageContent">
 
-    <!-- Category highscores -->
+    <!-- Topic highscores -->
     <div id="scoreText">
         <dl>
             <dt>General knowledge</dt>
-            <dd>@generalKnowledgeHighscore</dd>
+            <dd></dd>
         </dl>
         <dl>
             <dt>Gaming</dt>
-            <dd>@gamingTriviaHighscore</dd>
+            <dd></dd>
         </dl>
     </div>
 
@@ -32,13 +31,10 @@
 </div>
 
 @code {
-    private string? generalKnowledgeHighscore;
-    private string? gamingTriviaHighscore;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        generalKnowledgeHighscore = await localStorage.GetItemAsync<String>($"highScore_generalKnowledgeTrivia");
-        gamingTriviaHighscore = await localStorage.GetItemAsync<String>($"highScore_gamingTrivia");
+       
     }
 }
 

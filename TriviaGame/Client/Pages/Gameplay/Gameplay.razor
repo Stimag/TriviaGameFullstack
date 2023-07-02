@@ -1,10 +1,10 @@
 ﻿@page "/gameplay/{topic}"
-@inject TriviaScore TriviaScore
 @inject TriviaService TriviaService
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Net.Http.Json
 
+<!-- As long as there are more questions and lives is higher than 0, load gameplay elements -->
 @if (currentQuestion != null && lives > 0)
 {
     // Question box
@@ -38,7 +38,7 @@ else if (questions != null && questions.Count > 0)
 }
 else
 {
-    <p>Loading...</p>
+    <p class="loadingText">Loading...</p>
 }
 
 @code {
@@ -68,12 +68,10 @@ else
         }
     }
 
-    // Get amount of questions when loading page
+    // Perform synchronous operations on loading component
     protected override void OnInitialized() 
     {
         isPageLoaded = true; 
-
-        TriviaScore.Score = 0;
 
         if (questions is not null)
         {
@@ -81,8 +79,7 @@ else
         }
     }
 
-    // Get questions on loading page 
-    // Get first question
+    //  Perform asynchronous operations on loading component
     protected override async Task OnInitializedAsync()
     {
         await GetQuestions();
@@ -101,7 +98,7 @@ else
         if (questions != null && questions.Count > 0 && lives > 0)
         {
             currentQuestion = questions[0];
-            if (isPageLoaded) // Start the timer only if the page has finished loading
+            if (isPageLoaded) 
             {
                 StartTimer();
             }
@@ -114,7 +111,7 @@ else
         isAnswered = false;
     }
 
-    // Check if answer is right
+    // Check if answer is locked in and load next question if it is
     private void CheckAnswer(TriviaChoice? choice)
     {
         userChoice = choice;
@@ -122,7 +119,7 @@ else
         if (!isAnswered)
         {
             isAnswered = true;
-            ResetTimer();
+            ResetTimer();  
         }
 
         if (choice is not null && choice.IsCorrect == "N")
@@ -132,8 +129,7 @@ else
 
         if (questions != null && questions.Count > 0)
         {
-            
-            questions.RemoveAt(0); // Remove the current question from the list
+            questions.RemoveAt(0); 
 
             Task.Run(async () =>
             {
@@ -144,23 +140,20 @@ else
         }
         else
         {
-            currentQuestion = null; // No more questions, quiz is complete
+            currentQuestion = null; // No more questions, game is finished
         }
     }
 
     // Start timer
-    // Lose lives if timer reaches 0
     private void StartTimer()
     {
-        // Dispose the previous timer if it exists
         timer?.Dispose();
 
-        // Create a new timer instance
         timer = new System.Threading.Timer(state =>
         {
-            if (timeLeft > 0)
+            if (timeLeft > 0) 
             {
-                timeLeft--;
+                timeLeft--;  
             }
             else
             {
