@@ -1,4 +1,4 @@
-﻿namespace TriviaGame.Models
+﻿/*namespace TriviaGame.Client.Model
 {
     public class TriviaQuestion
     {
@@ -6,4 +6,4 @@
         public string[]? Choices { get; set; }
         public int CorrectChoice { get; set; }
     }
-}
+}*/

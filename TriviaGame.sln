@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriviaGame.Server", "TriviaGame\Server\TriviaGame.Server.csproj", "{0AB55233-343F-4A77-9826-3B60F89BD37D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriviaGame.Server", "TriviaGame\Server\TriviaGame.Server.csproj", "{0AB55233-343F-4A77-9826-3B60F89BD37D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriviaGame.Client", "TriviaGame\Client\TriviaGame.Client.csproj", "{BD5249B7-A259-45B3-B686-6E7DA2BB779A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriviaGame.Client", "TriviaGame\Client\TriviaGame.Client.csproj", "{BD5249B7-A259-45B3-B686-6E7DA2BB779A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriviaGame.Shared", "TriviaGame\Shared\TriviaGame.Shared.csproj", "{B1E7948A-15B2-491A-8109-F01AA58AA15B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriviaGame.Shared", "TriviaGame\Shared\TriviaGame.Shared.csproj", "{B1E7948A-15B2-491A-8109-F01AA58AA15B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

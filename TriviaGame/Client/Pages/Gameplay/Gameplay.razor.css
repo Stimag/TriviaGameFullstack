@@ -57,12 +57,10 @@
 
         .choices div.correct {
             background-color: #8bc34a;
-            color: #fff;
         }
 
         .choices div.incorrect {
-            background-color: #f44336;
-            color: #fff;
+            background-color: #ff0000;
         }
 
         .choices div.disabled {

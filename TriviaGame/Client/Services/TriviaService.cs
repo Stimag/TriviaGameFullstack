@@ -1,4 +1,5 @@
-﻿/*using System.Net.Http.Json;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace TriviaGame.Client.Services
 {
@@ -9,6 +10,7 @@ namespace TriviaGame.Client.Services
         public TriviaService(HttpClient http)
         {
             _http = http;
+            _http.BaseAddress = new Uri("https://localhost:7170/api/trivia/");
         }
 
         public List<TriviaTopic> TriviaTopics { get; set; } = new List<TriviaTopic>();
@@ -17,25 +19,25 @@ namespace TriviaGame.Client.Services
 
         public async Task GetTriviaTopics()
         {
-            var result = await _http.GetFromJsonAsync<List<TriviaTopic>>("api/trivia/topics");
-            if (result == null)
-                TriviaTopics = result;
+            var topics = await _http.GetFromJsonAsync<List<TriviaTopic>>("topics");
+            if (topics == null)
+                TriviaTopics = topics;
         }
 
-        public async Task GetTriviaQuestions()
+        public async Task<List<TriviaQuestion>> GetRandomQuestions(string topic)
         {
-            var result = await _http.GetFromJsonAsync<List<TriviaQuestion>>("api/trivia/questions");
-            if (result == null)
-                TriviaQuestions = result;
+            var url = $"randomquestions/{topic}";
+            return await _http.GetFromJsonAsync<List<TriviaQuestion>>(url);
         }
+
 
         public async Task GetTriviaChoices()
         {
-            var result = await _http.GetFromJsonAsync<List<TriviaChoice>>("api/trivia/choices");
-            if (result == null)
-                TriviaChoices = result;
+            var choices = await _http.GetFromJsonAsync<List<TriviaChoice>>("choices");
+            if (choices == null)
+                TriviaChoices = choices;
         }
     }
-}*/
+}
 
 

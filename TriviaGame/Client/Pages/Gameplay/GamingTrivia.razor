@@ -1,193 +1,22 @@
 ﻿@page "/gamingTrivia"
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject TriviaService triviaService
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Gaming trivia</PageTitle>
-<Gameplay triviaQuestionData="gamingQuestions" />
+<!-- <Gameplay triviaQuestionData="gamingQuestions" /> -->
 
 @code {
+    private List<TriviaQuestion> gamingQuestions;
+
     protected override async Task OnInitializedAsync()
     {
         var pageId = "gamingTrivia";
         await localStorage.SetItemAsync("lastPageId", pageId);
+        
+        gamingQuestions = await triviaService.GetRandomQuestions();
 
-        // Randomize choices
-        Random random = new Random();
-        foreach (var question in gamingQuestions)
-        {
-            // Shuffle choices
-            for (int i = question.Choices.Length - 1; i > 0; i--)
-            {
-                int j = random.Next(i + 1);
-                (question.Choices[j], question.Choices[i]) = (question.Choices[i], question.Choices[j]);
-
-                // Update the correct choice index if it is affected by shuffling
-                if (question.CorrectChoice == i)
-                {
-                    question.CorrectChoice = j;
-                }
-                else if (question.CorrectChoice == j)
-                {
-                    question.CorrectChoice = i;
-                }
-            }
-        }
+        _ = JSRuntime.InvokeVoidAsync("console.log", gamingQuestions.Count);
     }
-
-    private TriviaQuestion[] gamingQuestions = new TriviaQuestion[]
-    {
-        new TriviaQuestion
-        {
-            Question = "Which popular game is set in a blocky world where players can build and explore?",
-            Choices = new string[] { "Fortnite", "Minecraft", "Overwatch", "Call of Duty" },
-            CorrectChoice = 1
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game series is known for its futuristic, first-person shooter gameplay?",
-            Choices = new string[] { "Halo", "World of Warcraft", "Grand Theft Auto", "League of Legends" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "In which game would you find the character Nathan Drake?",
-            Choices = new string[] { "Uncharted", "Resident Evil", "Mass Effect", "Assassin's Creed" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which gaming console was released by Sony in 1994?",
-            Choices = new string[] { "PlayStation", "Xbox", "Nintendo 64", "Sega Genesis" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features the iconic character Master Chief?",
-            Choices = new string[] { "Doom", "Mortal Kombat", "Gears of War", "Halo" },
-            CorrectChoice = 3
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game is set in a post-apocalyptic world overrun by zombies?",
-            Choices = new string[] { "Fallout", "The Last of Us", "BioShock", "Red Dead Redemption" },
-            CorrectChoice = 1
-        },
-        new TriviaQuestion
-        {
-            Question = "What is the best-selling video game of all time (2023)?",
-            Choices = new string[] { "Minecraft", "Tetris", "Grand Theft Auto V", "Super Mario Bros." },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game involves building and managing your own virtual world with blocks?",
-            Choices = new string[] { "Roblox", "Terraria", "The Sims", "Minecraft" },
-            CorrectChoice = 3
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game series features a character named Kratos, who seeks revenge against the gods of Olympus?",
-            Choices = new string[] { "God of War", "Assassin's Creed", "Bioshock", "The Legend of Zelda" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game is set in a fantasy world called Azeroth and has millions of players worldwide?",
-            Choices = new string[] { "League of Legends", "World of Warcraft", "Destiny", "Diablo" },
-            CorrectChoice = 1
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game franchise allows players to assume the role of a spacefaring commander exploring the galaxy?",
-            Choices = new string[] { "Mass Effect", "Star Wars Jedi: Fallen Order", "No Man's Sky", "Starcraft" },
-            CorrectChoice = 2
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features the iconic character Lara Croft?",
-            Choices = new string[] { "Tomb Raider", "Assassin's Creed", "The Witcher", "Resident Evil" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game series is known for its realistic racing simulation gameplay?",
-            Choices = new string[] { "Need for Speed", "Forza Motorsport", "Mario Kart", "Burnout" },
-            CorrectChoice = 1
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game series features the character Solid Snake?",
-            Choices = new string[] { "Metal Gear Solid", "Splinter Cell", "Deus Ex", "Final Fantasy" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features the character Samus Aran, a bounty hunter in a powered exoskeleton suit?",
-            Choices = new string[] { "Metroid Prime", "Super Mario Odyssey", "Donkey Kong Country", "Star Fox" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features a protagonist named Booker DeWitt and is set in the floating city of Columbia?",
-            Choices = new string[] { "BioShock Infinite", "Dishonored", "Bioshock", "Prey" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'Metal Gear Solid,' what is the real name of the character known as Solid Snake?",
-            Choices = new string[] { "David", "Jack", "Frank", "Raiden" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'Red Dead Redemption 2,' what is the name of the protagonist?",
-            Choices = new string[] { "Arthur Morgan", "John Marston", "Dutch van der Linde", "Bill Williamson" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'Dark Souls III,' what is the name of the final boss of the base game?",
-            Choices = new string[] { "Nameless King", "Sister Friede", "Champion Gundyr", "Soul of Cinder" },
-            CorrectChoice = 3
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'NieR: Automata,' what is the name of the android protagonist who fights against machines to reclaim Earth for humanity?",
-            Choices = new string[] { "A2", "9S", "2B", "2E" },
-            CorrectChoice = 2
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'Hollow Knight,' what is the name of the fallen kingdom where the game takes place?",
-            Choices = new string[] { "Hallownest", "Deepnest", "Crystal Peak", "Greenpath" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game series is known for its brutal difficulty, where players must overcome challenging obstacles and precision-based platforming?",
-            Choices = new string[] { "Super Meat Boy", "Celeste", "Cuphead", "Ori and the Blind Forest" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features a protagonist named Aloy, who explores a post-apocalyptic world overrun by robotic creatures?",
-            Choices = new string[] { "Horizon Zero Dawn", "NieR: Automata", "The Last of Us Part II", "Ghost of Tsushima" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "In the game 'Chrono Trigger,' what is the name of the creature that serves as the final boss and threatens to destroy time itself?",
-            Choices = new string[] { "Lavos", "Zeal", "Magus", "Schala" },
-            CorrectChoice = 0
-        },
-        new TriviaQuestion
-        {
-            Question = "Which game features a cybernetically enhanced protagonist named Adam Jensen, who investigates a global conspiracy?",
-            Choices = new string[] { "Deus Ex: Human Revolution", "Mirror's Edge Catalyst", "Watch Dogs 2", "Cyberpunk 2077" },
-            CorrectChoice = 0
-        },
-
-
-
-    };
 }
