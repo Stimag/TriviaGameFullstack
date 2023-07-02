@@ -1,4 +1,3 @@
-global using TriviaGame.Client.Model;
 global using TriviaGame.Shared.Models;
 global using TriviaGame.Client.Services;
 global using Blazored.LocalStorage;
