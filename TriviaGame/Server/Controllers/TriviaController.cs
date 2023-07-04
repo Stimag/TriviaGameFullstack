@@ -15,19 +15,28 @@ namespace TriviaGame.Server.Controllers
             _context = context;
         }
 
-        // Get random trivia questions
         [HttpGet("randomquestions/{topic}")]
-        public ActionResult<List<TriviaQuestion>> GetRandomQuestions(string topic)
+        public ActionResult<List<TriviaQuestion>> GetRandomQuestions(string topic, int difficulty)
         {
             var randomQuestions = _context.TriviaQuestions
                 .Include(q => q.TriviaChoices)
-                .Where(t => t.Topic.TopicName == topic) 
-                .OrderBy(q => Guid.NewGuid())
+                .Where(t => t.Topic.TopicName == topic)
+                .Where(d => d.QuestionDifficulty == difficulty)
                 .ToList();
 
             if (randomQuestions == null || randomQuestions.Count == 0)
             {
                 return NotFound();
+            }
+
+            // Randomizing order of questions
+            var random = new Random();
+            randomQuestions = randomQuestions.OrderBy(q => random.Next()).ToList();
+
+            // Randomizing order of choices 
+            foreach (var question in randomQuestions)
+            {
+                question.TriviaChoices = question.TriviaChoices.OrderBy(c => random.Next()).ToList();
             }
 
             return randomQuestions;

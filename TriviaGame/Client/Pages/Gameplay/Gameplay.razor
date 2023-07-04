@@ -3,9 +3,10 @@
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Net.Http.Json
+@inject IJSRuntime JS
 
 <!-- As long as there are more questions and lives is higher than 0, load gameplay elements -->
-@if (currentQuestion != null && lives > 0)
+@if (currentQuestion != null && questionNumber < totalQuestions && lives > 0)
 {
     // Question box
     <div id="questionBox">
@@ -74,24 +75,24 @@ else
     protected override void OnInitialized() 
     {
         isPageLoaded = true; 
-
-        if (questions is not null)
-        {
-            totalQuestions = questions.Count;
-        }
     }
 
     //  Perform asynchronous operations on loading component
     protected override async Task OnInitializedAsync()
     {
-        await GetQuestions();
+        await GetQuestions(3);
+        if (questions is not null)
+        {
+            totalQuestions = questions.Count;
+            await JS.InvokeVoidAsync("console.log", questions);
+        }
         GetNextQuestion();
     }
 
     // Get questions
-    private async Task GetQuestions()
+    private async Task GetQuestions(int difficulty)
     {
-        questions = await TriviaService.GetRandomQuestions(topic);
+        questions = await TriviaService.GetRandomQuestions(topic, difficulty);
     }
 
     // Get next question
@@ -123,7 +124,7 @@ else
         } 
         else
         {
-            return; // Disables choices properly when answer is locked
+            return; // Disables choices when answer is locked
         }
 
         userChoice = choice; // Used for styling correct/incorrect choices correctly 
