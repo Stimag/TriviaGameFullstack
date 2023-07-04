@@ -15,31 +15,58 @@ namespace TriviaGame.Server.Controllers
             _context = context;
         }
 
-        [HttpGet("randomquestions/{topic}")]
-        public ActionResult<List<TriviaQuestion>> GetRandomQuestions(string topic, int difficulty)
+        /*[HttpGet("questions/{topic}")]
+        public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)
         {
-            var randomQuestions = _context.TriviaQuestions
+            var questions = _context.TriviaQuestions
+                .Include(q => q.TriviaChoices)
+                .Where(t => t.Topic.TopicName == topic)
+                .ToList();
+
+            if (questions == null || questions.Count == 0)
+            {
+                return NotFound();
+            }
+
+            questions = RandomizeQuestionsAndChoices(questions);
+
+            return questions;
+        }*/
+
+        [HttpGet("questions/{topic}/{difficulty}")]
+        public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopicAndDifficulty(string topic, int difficulty)
+        {
+            var questions = _context.TriviaQuestions
                 .Include(q => q.TriviaChoices)
                 .Where(t => t.Topic.TopicName == topic)
                 .Where(d => d.QuestionDifficulty == difficulty)
                 .ToList();
 
-            if (randomQuestions == null || randomQuestions.Count == 0)
+            if (questions == null || questions.Count == 0)
             {
                 return NotFound();
             }
 
-            // Randomizing order of questions
+            questions = RandomizeQuestionsAndChoices(questions);
+
+            return questions;
+        }
+
+
+        private List<TriviaQuestion> RandomizeQuestionsAndChoices(List<TriviaQuestion> questions)
+        {
             var random = new Random();
-            randomQuestions = randomQuestions.OrderBy(q => random.Next()).ToList();
+
+            // Randomizing order of questions
+            questions = questions.OrderBy(q => random.Next()).ToList();
 
             // Randomizing order of choices 
-            foreach (var question in randomQuestions)
+            foreach (var question in questions)
             {
                 question.TriviaChoices = question.TriviaChoices.OrderBy(c => random.Next()).ToList();
             }
 
-            return randomQuestions;
+            return questions;
         }
     }
 }

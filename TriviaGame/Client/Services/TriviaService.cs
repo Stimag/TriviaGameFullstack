@@ -13,9 +13,15 @@ namespace TriviaGame.Client.Services
             _http.BaseAddress = new Uri("https://localhost:7170/api/trivia/");
         }
 
-        public async Task<List<TriviaQuestion>> GetRandomQuestions(string topic, int difficulty)
+        /*public async Task<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)
         {
-            var url = $"randomquestions/{topic}?difficulty={difficulty}";
+            var url = $"questions/{topic}";
+            return await _http.GetFromJsonAsync<List<TriviaQuestion>>(url);
+        }*/
+
+        public async Task<List<TriviaQuestion>> GetRandomQuestionsByTopicAndDifficulty(string topic, int difficulty)
+        {
+            var url = $"questions/{topic}/{difficulty}";
             return await _http.GetFromJsonAsync<List<TriviaQuestion>>(url);
         }
     }
