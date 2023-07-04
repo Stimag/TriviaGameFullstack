@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using System.Net.Http.Json
-@inject IJSRuntime JS
 
 <!-- As long as there are more questions and lives is higher than 0, load gameplay elements -->
 @if (currentQuestion != null && questionNumber < totalQuestions && lives > 0)
@@ -80,11 +79,10 @@ else
     //  Perform asynchronous operations on loading component
     protected override async Task OnInitializedAsync()
     {
-        await GetQuestions(3);
+        await GetQuestions(1);
         if (questions is not null)
         {
             totalQuestions = questions.Count;
-            await JS.InvokeVoidAsync("console.log", questions);
         }
         GetNextQuestion();
     }
