@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TriviaGame.Shared.Models;
 
@@ -36,10 +37,14 @@ namespace TriviaGame.Server.Controllers
         [HttpGet("questions/{topic}/{difficulty}")]
         public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopicAndDifficulty(string topic, int difficulty)
         {
+            var topicParameter = new SqlParameter("@topic", topic);
+            var difficultyParameter = new SqlParameter("@difficulty", difficulty);
+
+            // Execute the stored procedure and retrieve the questions
             var questions = _context.TriviaQuestions
-                .Include(q => q.TriviaChoices)
-                .Where(t => t.Topic.TopicName == topic)
-                .Where(d => d.QuestionDifficulty == difficulty)
+                .FromSqlRaw("EXEC GetQuestionsByTopicAndDifficulty @topic, @difficulty",
+                    topicParameter,
+                    difficultyParameter)
                 .ToList();
 
             if (questions == null || questions.Count == 0)
@@ -47,7 +52,7 @@ namespace TriviaGame.Server.Controllers
                 return NotFound();
             }
 
-            questions = RandomizeQuestionsAndChoices(questions);
+            RandomizeQuestionsAndChoices(questions);
 
             return questions;
         }
@@ -60,10 +65,18 @@ namespace TriviaGame.Server.Controllers
             // Randomizing order of questions
             questions = questions.OrderBy(q => random.Next()).ToList();
 
-            // Randomizing order of choices 
+            // Retrieve the choices for the randomized questions
+            var questionIds = questions.Select(q => q.QuestionId).ToList();
+            var choices = _context.TriviaChoices
+                .Where(c => questionIds.Contains(c.QuestionId))
+                .ToList();
+
+            // Map the choices to their respective questions
             foreach (var question in questions)
             {
-                question.TriviaChoices = question.TriviaChoices.OrderBy(c => random.Next()).ToList();
+                question.TriviaChoices = choices.Where(c => c.QuestionId == question.QuestionId)
+                                                .OrderBy(c => random.Next())
+                                                .ToList();
             }
 
             return questions;
