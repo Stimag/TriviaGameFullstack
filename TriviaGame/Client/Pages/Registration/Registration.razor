@@ -4,19 +4,19 @@
 
 <PageTitle>Register</PageTitle>
 
-<div>
-    <label for="email">Email:</label>
-    <input id="email" type="email" @bind="@email" />
+<div class="authBox">
+    <label for="email" id="authLabelText">Email</label>
+    <input id="email" type="email" class="inputBox" @bind="@email" />
 </div>
 
-<div>
-    <label for="username">Username:</label>
-    <input id="username" type="text" @bind="@username" />
+<div class="authBox">
+    <label for="username" id="authLabelText">Username</label>
+    <input id="username" type="text" class="inputBox" @bind="@username" />
 </div>
 
-<div>
-    <label for="password">Password:</label>
-    <input id="password" type="password" @bind="@password" />
+<div class="authBox">
+    <label for="password" id="authLabelText">Password</label>
+    <input id="password" type="password" class="inputBox" @bind="@password" />
 </div>
 
 <div class="menuBox" @onclick="Register">

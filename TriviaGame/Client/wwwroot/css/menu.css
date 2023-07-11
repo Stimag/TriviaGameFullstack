@@ -1,0 +1,21 @@
+﻿/* Menu components */
+.menuBox {
+    width: 25rem;
+    height: 3rem;
+    border: 0.2rem solid #b0beff;
+    border-radius: 1rem;
+    margin: 0.5rem 0 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.menuBoxText {
+    color: white;
+    font-size: 1.4rem;
+}
+
+.menuLink {
+    text-decoration: none;
+}

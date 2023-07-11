@@ -1,0 +1,12 @@
+﻿/* Input boxes */
+.inputBox {
+    border-radius: 0.5rem;
+}
+
+/* Authentication boxes */
+.authBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

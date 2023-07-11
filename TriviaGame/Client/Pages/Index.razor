@@ -5,14 +5,14 @@
 
 <PageTitle>Login</PageTitle>
 
-<div>
-    <label for="email" id="authLabelText">Email:</label>
-    <input id="email" type="email" @bind="@loginModel.Email" />
+<div class="authBox">
+    <label for="email" id="authLabelText">Email</label>
+    <input id="email" type="email" class="inputBox" @bind="@loginModel.Email" />
 </div>
 
-<div>
-    <label for="password" id="authLabelText">Password:</label>
-    <input id="password" type="password" @bind="@loginModel.Password" />
+<div class="authBox">
+    <label for="password" id="authLabelText">Password</label>
+    <input id="password" type="password" class="inputBox" @bind="@loginModel.Password" />
 </div>
 
 <div class="menuBox" @onclick="Login">
