@@ -1,5 +1,4 @@
 ﻿@page "/results"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 
 <PageTitle>Results</PageTitle>
@@ -33,7 +32,8 @@
         
     }
 
-    // Update highscore in localStorage if it is higher than previous highscore
+    // Update highscore in 
+    //  if it is higher than previous highscore
     private async Task UpdateHighscore(int newHighscore, string pageId)
     {
         

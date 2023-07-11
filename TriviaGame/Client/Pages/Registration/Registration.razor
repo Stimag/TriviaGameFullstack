@@ -2,7 +2,7 @@
 @inject AuthenticationService authService
 @inject NavigationManager NavigationManager
 
-<h3>Register</h3>
+<PageTitle>Register</PageTitle>
 
 <div>
     <label for="email">Email:</label>
@@ -19,9 +19,15 @@
     <input id="password" type="password" @bind="@password" />
 </div>
 
-<div>
-    <button @onclick="Register">Register</button>
+<div class="menuBox" @onclick="Register">
+    <div class="menuBoxText">Register</div>
 </div>
+
+<NavLink class="menuLink" href="/">
+    <div class="menuBox">
+        <div class="menuBoxText">Sign in</div>
+    </div>
+</NavLink>
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {

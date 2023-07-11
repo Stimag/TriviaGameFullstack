@@ -1,6 +1,5 @@
 global using TriviaGame.Shared.Models;
 global using TriviaGame.Client.Services;
-global using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TriviaGame.Client;

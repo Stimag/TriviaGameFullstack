@@ -3,20 +3,21 @@
 @inject NavigationManager NavigationManager
 @using System.ComponentModel.DataAnnotations
 
-<h3>Login</h3>
+<PageTitle>Login</PageTitle>
 
 <div>
-    <label for="email">Email:</label>
+    <label for="email" id="authLabelText">Email:</label>
     <input id="email" type="email" @bind="@loginModel.Email" />
 </div>
 
 <div>
-    <label for="password">Password:</label>
+    <label for="password" id="authLabelText">Password:</label>
     <input id="password" type="password" @bind="@loginModel.Password" />
 </div>
 
-<div>
-    <button @onclick="Login">Login</button>
+
+<div class="menuBox" @onclick="Login">
+    <div class="menuBoxText">Login</div>
 </div>
 
 <NavLink class="menuLink" href="/register">
@@ -32,7 +33,7 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
-    private string errorMessage;
+    private string? errorMessage;
 
     private async Task Login()
     {
