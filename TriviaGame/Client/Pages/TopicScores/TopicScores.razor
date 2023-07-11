@@ -1,34 +1,29 @@
 ﻿@page "/topic-scores"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <PageTitle>Topic scores</PageTitle>
 
-<div class="pageContent">
-
-    <!-- Topic highscores -->
-    <div id="scoreText">
-        <dl>
-            <dt>General knowledge</dt>
-            <dd></dd>
-        </dl>
-        <dl>
-            <dt>Gaming</dt>
-            <dd></dd>
-        </dl>
-    </div>
-
-    <!-- Back to menu button -->
-    <NavLink class="menuLink" href="/">
-        <div class="menuBox">
-            <div class="menuBoxText">Back to menu</div>
-        </div>
-    </NavLink>
-
-    <!--<div class="menuBox">
-         <div class="menuBoxText" @onclick="(() => Clear())">Clear</div>
-    </div>-->
-
+<!-- Topic highscores -->
+<div id="scoreText">
+    <dl>
+        <dt>General knowledge</dt>
+        <dd></dd>
+    </dl>
+    <dl>
+        <dt>Gaming</dt>
+        <dd></dd>
+    </dl>
 </div>
+
+<!-- Back to menu button -->
+<NavLink class="menuLink" href="/">
+    <div class="menuBox">
+        <div class="menuBoxText">Back to menu</div>
+    </div>
+</NavLink>
+
+<!--<div class="menuBox">
+        <div class="menuBoxText" @onclick="(() => Clear())">Clear</div>
+</div>-->
 
 @code {
     

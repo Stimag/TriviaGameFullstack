@@ -5,11 +5,11 @@ namespace TriviaGame.Shared.Models;
 
 public partial class UserAccount
 {
-    public string UserAccountId { get; set; } = null!;
+    public string UserAccountId { get; set; } 
+
+    public string Email { get; set; } = null!;
 
     public string Username { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
-
-    public virtual ICollection<UserScore> UserScores { get; set; } = new List<UserScore>();
+    public string PasswordHash { get; set; } = null!;
 }

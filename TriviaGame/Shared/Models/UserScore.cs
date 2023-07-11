@@ -5,11 +5,9 @@ namespace TriviaGame.Shared.Models;
 
 public partial class UserScore
 {
-    public int ScoreId { get; set; }
+    public int Score { get; set; }
 
-    public int UserScore1 { get; set; }
-
-    public int UserHighscore { get; set; }
+    public int Highscore { get; set; }
 
     public string UserAccountId { get; set; } = null!;
 

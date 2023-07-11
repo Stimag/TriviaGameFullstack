@@ -1,0 +1,27 @@
+﻿@page "/mainmenu"
+@inject TriviaService triviaService
+
+<PageTitle>Trivia game</PageTitle>
+
+<!-- Play button -->
+<NavLink class="menuLink" href="/topic-picker">
+    <div class="menuBox">
+        <div class="menuBoxText">Play</div>
+    </div>
+</NavLink>
+
+<!-- Game information button -->
+<NavLink class="menuLink" href="/game-information">
+    <div class="menuBox">
+        <div class="menuBoxText">Game information</div>
+    </div>
+</NavLink>
+
+<!-- Personal statistics button -->
+<NavLink class="menuLink" href="/topic-scores">
+    <div class="menuBox">
+        <div class="menuBoxText">Topic scores</div>
+    </div>
+</NavLink>
+
+

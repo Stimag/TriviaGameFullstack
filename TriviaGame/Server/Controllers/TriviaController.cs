@@ -9,30 +9,12 @@ namespace TriviaGame.Server.Controllers
     [ApiController]
     public class TriviaController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DatabaseContext dbContext;
 
-        public TriviaController(DataContext context)
+        public TriviaController(DatabaseContext context)
         {
-            _context = context;
+            dbContext = context;
         }
-
-        /*[HttpGet("questions/{topic}")]
-        public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)
-        {
-            var questions = _context.TriviaQuestions
-                .Include(q => q.TriviaChoices)
-                .Where(t => t.Topic.TopicName == topic)
-                .ToList();
-
-            if (questions == null || questions.Count == 0)
-            {
-                return NotFound();
-            }
-
-            questions = RandomizeQuestionsAndChoices(questions);
-
-            return questions;
-        }*/
 
         [HttpGet("questions/{topic}/{difficulty}")]
         public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopicAndDifficulty(string topic, int difficulty)
@@ -41,7 +23,7 @@ namespace TriviaGame.Server.Controllers
             var difficultyParameter = new SqlParameter("@difficulty", difficulty);
 
             // Execute the stored procedure and retrieve the questions
-            var questions = _context.TriviaQuestions
+            var questions = dbContext.TriviaQuestions
                 .FromSqlRaw("EXEC GetQuestionsByTopicAndDifficulty @topic, @difficulty",
                     topicParameter,
                     difficultyParameter)
@@ -57,7 +39,6 @@ namespace TriviaGame.Server.Controllers
             return questions;
         }
 
-
         private List<TriviaQuestion> RandomizeQuestionsAndChoices(List<TriviaQuestion> questions)
         {
             var random = new Random();
@@ -67,7 +48,7 @@ namespace TriviaGame.Server.Controllers
 
             // Retrieve the choices for the randomized questions
             var questionIds = questions.Select(q => q.QuestionId).ToList();
-            var choices = _context.TriviaChoices
+            var choices = dbContext.TriviaChoices
                 .Where(c => questionIds.Contains(c.QuestionId))
                 .ToList();
 
@@ -81,5 +62,25 @@ namespace TriviaGame.Server.Controllers
 
             return questions;
         }
+
+
+
+        /*[HttpGet("questions/{topic}")]
+        public ActionResult<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)
+        {
+            var questions = dataContext.TriviaQuestions
+                .Include(q => q.TriviaChoices)
+                .Where(t => t.Topic.TopicName == topic)
+                .ToList();
+
+            if (questions == null || questions.Count == 0)
+            {
+                return NotFound();
+            }
+
+            questions = RandomizeQuestionsAndChoices(questions);
+
+            return questions;
+        }*/
     }
 }

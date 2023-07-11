@@ -5,14 +5,13 @@ using TriviaGame.Shared.Models;
 
 namespace TriviaGame.Server.Data;
 
-public partial class DataContext : DbContext
+public partial class DatabaseContext : DbContext
 {
-    public DataContext()
+    public DatabaseContext()
     {
     }
 
-    public DataContext(DbContextOptions<DataContext> options)
-        : base(options)
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
     }
 
@@ -29,6 +28,7 @@ public partial class DataContext : DbContext
     public virtual DbSet<UserScore> UserScores { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=Trivia Game Database;Trusted_Connection=true;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ public partial class DataContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("choice_id");
             entity.Property(e => e.ChoiceText)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("choice_text");
             entity.Property(e => e.IsCorrect)
@@ -68,12 +68,9 @@ public partial class DataContext : DbContext
             entity.Property(e => e.QuestionId)
                 .ValueGeneratedNever()
                 .HasColumnName("question_id");
-            entity.Property(e => e.QuestionDifficulty)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("question_difficulty");
+            entity.Property(e => e.QuestionDifficulty).HasColumnName("question_difficulty");
             entity.Property(e => e.QuestionText)
-                .HasMaxLength(100)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("question_text");
             entity.Property(e => e.TopicId).HasColumnName("topic_id");
@@ -94,7 +91,7 @@ public partial class DataContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("topic_id");
             entity.Property(e => e.TopicName)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("topic_name");
         });
@@ -106,16 +103,17 @@ public partial class DataContext : DbContext
             entity.ToTable("UserAccount");
 
             entity.Property(e => e.UserAccountId)
-                .HasMaxLength(36)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("user_account_id");
-            entity.Property(e => e.Password)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("password");
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("email");
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(255)
+                .HasColumnName("password_hash");
             entity.Property(e => e.Username)
-                .HasMaxLength(30)
-                .IsUnicode(false)
+                .HasMaxLength(255)
                 .HasColumnName("username");
         });
 
@@ -127,7 +125,7 @@ public partial class DataContext : DbContext
 
             entity.Property(e => e.RemainingLives).HasColumnName("remaining_lives");
             entity.Property(e => e.UserAccountId)
-                .HasMaxLength(36)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("user_account_id");
 
@@ -139,21 +137,18 @@ public partial class DataContext : DbContext
 
         modelBuilder.Entity<UserScore>(entity =>
         {
-            entity.HasKey(e => e.ScoreId).HasName("PK__Score__8CA1905074171DF0");
+            entity
+                .HasNoKey()
+                .ToTable("UserScore");
 
-            entity.ToTable("UserScore");
-
-            entity.Property(e => e.ScoreId)
-                .ValueGeneratedNever()
-                .HasColumnName("score_id");
+            entity.Property(e => e.Highscore).HasColumnName("highscore");
+            entity.Property(e => e.Score).HasColumnName("score");
             entity.Property(e => e.UserAccountId)
-                .HasMaxLength(36)
+                .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("user_account_id");
-            entity.Property(e => e.UserHighscore).HasColumnName("user_highscore");
-            entity.Property(e => e.UserScore1).HasColumnName("user_score");
 
-            entity.HasOne(d => d.UserAccount).WithMany(p => p.UserScores)
+            entity.HasOne(d => d.UserAccount).WithMany()
                 .HasForeignKey(d => d.UserAccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Score__user_acco__6FE99F9F");

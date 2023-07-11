@@ -3,14 +3,16 @@ using System.Net.Http.Json;
 
 namespace TriviaGame.Client.Services
 {
-    public class TriviaService : ITriviaService
+    public class TriviaService
     {
-        private readonly HttpClient _http;
+        private readonly HttpClient httpClient;
 
         public TriviaService(HttpClient http)
         {
-            _http = http;
-            _http.BaseAddress = new Uri("https://localhost:7170/api/trivia/");
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7170/api/trivia/")
+            };
         }
 
         /*public async Task<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)
@@ -22,7 +24,7 @@ namespace TriviaGame.Client.Services
         public async Task<List<TriviaQuestion>> GetRandomQuestionsByTopicAndDifficulty(string topic, int difficulty)
         {
             var url = $"questions/{topic}/{difficulty}";
-            return await _http.GetFromJsonAsync<List<TriviaQuestion>>(url);
+            return await httpClient.GetFromJsonAsync<List<TriviaQuestion>>(url);
         }
     }
 }

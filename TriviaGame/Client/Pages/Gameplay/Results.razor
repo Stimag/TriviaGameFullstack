@@ -4,30 +4,26 @@
 
 <PageTitle>Results</PageTitle>
 
-<div class="pageContent">
+<!-- Quiz result title -->
+<h1 id="resultTitle">Quiz Result</h1>
+<!-- Quiz result text -->
+<p class="resultText">You made it through </p>
+<p class="resultText">Your highscore is </p>
 
-    <!-- Quiz result title -->
-    <h1 id="resultTitle">Quiz Result</h1>
-    <!-- Quiz result text -->
-    <p class="resultText">You made it through </p>
-    <p class="resultText">Your highscore is </p>
+<!-- Play again button -->
+<NavLink class="menuLink" href="/topic-picker">
+    <div class="menuBox">
+        <div class="menuBoxText">Play again</div>
+    </div>
+</NavLink>
 
-    <!-- Play again button -->
-    <NavLink class="menuLink" href="/topic-picker">
-        <div class="menuBox">
-            <div class="menuBoxText">Play again</div>
-        </div>
-    </NavLink>
+<!-- Back to menu button -->
+<NavLink class="menuLink" href="/mainmenu">
+    <div class="menuBox">
+        <div class="menuBoxText">Back to menu</div>
+    </div>
+</NavLink>
 
-    <!-- Back to menu button -->
-    <NavLink class="menuLink" href="/">
-        <div class="menuBox">
-            <div class="menuBoxText">Back to menu</div>
-        </div>
-    </NavLink>
-
-</div>
- 
 @code {
     private string? pageId;
 

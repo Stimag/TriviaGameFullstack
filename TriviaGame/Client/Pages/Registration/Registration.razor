@@ -1,0 +1,61 @@
+﻿@page "/register"
+@inject AuthenticationService authService
+@inject NavigationManager NavigationManager
+
+<h3>Register</h3>
+
+<div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" @bind="@email" />
+</div>
+
+<div>
+    <label for="username">Username:</label>
+    <input id="username" type="text" @bind="@username" />
+</div>
+
+<div>
+    <label for="password">Password:</label>
+    <input id="password" type="password" @bind="@password" />
+</div>
+
+<div>
+    <button @onclick="Register">Register</button>
+</div>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color: red;">@errorMessage</p>
+}
+
+@code {
+    private string email;
+    private string username;
+    private string password;
+    private string? errorMessage;
+
+    private async Task Register()
+    {
+        var user = new UserAccount
+            {
+                UserAccountId = "",
+                Email = email,
+                Username = username,
+                PasswordHash = password
+            };
+
+        bool registrationResult = await authService.Register(user);
+
+        if (registrationResult)
+        {
+            // Redirect to another page upon successful registration
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Display an error message for unsuccessful registration
+            errorMessage = "Registration failed. Please try again.";
+        }
+    }
+}
+

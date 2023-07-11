@@ -1,37 +1,57 @@
 ﻿@page "/"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject TriviaService triviaService
+@inject AuthenticationService authService
+@inject NavigationManager NavigationManager
+@using System.ComponentModel.DataAnnotations
 
-<PageTitle>Trivia game</PageTitle>
+<h3>Login</h3>
 
-<div class="pageContent">
-
-    <!-- Play button -->
-    <NavLink class="menuLink" href="/topic-picker">
-        <div class="menuBox">
-            <div class="menuBoxText">Play</div>
-        </div>
-    </NavLink>
-
-    <!-- Game information button -->
-    <NavLink class="menuLink" href="/game-information">
-        <div class="menuBox">
-            <div class="menuBoxText">Game information</div>
-        </div>
-    </NavLink> 
-
-    <!-- Personal statistics button -->
-    <NavLink class="menuLink" href="/topic-scores">
-        <div class="menuBox"> 
-            <div class="menuBoxText">Topic scores</div>
-        </div>
-    </NavLink>
-
+<div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" @bind="@loginModel.Email" />
 </div>
 
+<div>
+    <label for="password">Password:</label>
+    <input id="password" type="password" @bind="@loginModel.Password" />
+</div>
+
+<div>
+    <button @onclick="Login">Login</button>
+</div>
+
+<NavLink class="menuLink" href="/register">
+    <div class="menuBox">
+        <div class="menuBoxText">Sign up</div>
+    </div>
+</NavLink>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color: red;">@errorMessage</p>
+}
+
 @code {
-    protected override async Task OnInitializedAsync()
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage;
+
+    private async Task Login()
     {
-       
+        bool loginResult = await authService.Login(loginModel);
+
+        if (loginResult)
+        {
+            // Redirect to another page upon successful login
+            NavigationManager.NavigateTo("/mainmenu");
+        }
+        else
+        {
+            errorMessage = "Login failed. Please try again.";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
