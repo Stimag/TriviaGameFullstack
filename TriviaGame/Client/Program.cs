@@ -12,4 +12,5 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<TriviaService>();
 
+
 await builder.Build().RunAsync();

@@ -5,7 +5,7 @@ namespace TriviaGame.Shared.Models;
 
 public partial class UserAccount
 {
-    public string UserAccountId { get; set; } 
+    public string? UserAccountId { get; set; } 
 
     public string Email { get; set; } = null!;
 

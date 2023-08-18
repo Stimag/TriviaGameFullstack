@@ -7,12 +7,13 @@ namespace TriviaGame.Client.Services
     {
         private readonly HttpClient httpClient;
 
-        public TriviaService(HttpClient http)
+        public TriviaService()
         {
             httpClient = new HttpClient
             {
                 BaseAddress = new Uri("https://localhost:7170/api/trivia/")
             };
+
         }
 
         /*public async Task<List<TriviaQuestion>> GetRandomQuestionsByTopic(string topic)

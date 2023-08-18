@@ -1,10 +1,7 @@
-﻿using System.Net.Http;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
 using static TriviaGame.Client.Pages.Index;
-using static TriviaGame.Client.Pages.Registration.Registration;
+
 
 namespace TriviaGame.Client.Services
 {
@@ -12,7 +9,7 @@ namespace TriviaGame.Client.Services
     {
         private readonly HttpClient httpClient;
 
-        public AuthenticationService(HttpClient http)
+        public AuthenticationService()
         {
             httpClient = new HttpClient
             {
@@ -20,10 +17,12 @@ namespace TriviaGame.Client.Services
             };
         }
 
+        public HttpClient? Http { get; }
+
         public async Task<bool> Login(LoginModel loginModel)
         {
             using var client = new HttpClient();
-            
+
             string json = JsonSerializer.Serialize(loginModel);
             StringContent content = new(json, Encoding.UTF8, "application/json");
 
