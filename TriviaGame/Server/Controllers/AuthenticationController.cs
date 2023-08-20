@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Eventing.Reader;
 using TriviaGame.Client.Services;
 using TriviaGame.Shared.Models;
 using static TriviaGame.Client.Pages.Index;
-using BCrypt.Net;
 
 
 namespace TriviaGame.Server.Controllers
@@ -14,10 +11,12 @@ namespace TriviaGame.Server.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly DatabaseContext dbContext;
+        private readonly AuthenticationService _authService;
 
-        public AuthenticationController(DatabaseContext context)
+        public AuthenticationController(DatabaseContext context, AuthenticationService authService)
         {
             dbContext = context;
+            _authService = authService;
         }
 
         [HttpPost("login")]
@@ -57,6 +56,12 @@ namespace TriviaGame.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserAccount user)
         {
+
+            if (!_authService.IsValidUserAccount(user))
+            {
+                return BadRequest("Invalid input."); 
+            }
+
             bool emailExists = await dbContext.UserAccounts.AnyAsync(u => u.Email == user.Email);
             if (emailExists)
             {

@@ -1,23 +1,39 @@
 ﻿@page "/register"
+@using System.Text.Encodings.Web;
 @inject AuthenticationService authService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Register</PageTitle>
 
 <div class="authBox">
-    <label for="email" id="authLabelText">Email</label>
-    <input id="email" type="email" class="inputBox" @bind="@email" />
+    <label for="email" class="authLabelText">Email</label>
+    <input id="email" type="email" class="inputBox" @bind="@email" required />
+    @if (!string.IsNullOrEmpty(email) && !authService.IsValidEmail(email))
+    {
+        <div class="authErrorText">Please enter a valid email address.</div>
+    }
 </div>
 
-<div class="authBox">
-    <label for="username" id="authLabelText">Username</label>
-    <input id="username" type="text" class="inputBox" @bind="@username" />
-</div>
 
 <div class="authBox">
-    <label for="password" id="authLabelText">Password</label>
-    <input id="password" type="password" class="inputBox" @bind="@password" />
+    <label for="username" class="authLabelText">Username</label>
+    <input id="username" type="text" class="inputBox" @bind="@username" required />
+    @if (!string.IsNullOrEmpty(username) && !authService.IsValidUsername(username))
+    {
+        <div class="authErrorText">Username must be between 3 and 30 characters and only contain letters and numbers.</div>
+    }
 </div>
+
+
+<div class="authBox">
+    <label for="password" class="authLabelText">Password</label>
+    <input id="password" type="password" class="inputBox" @bind="@password" required />
+    @if (!string.IsNullOrEmpty(password) && !authService.IsValidPassword(password))
+    {
+        <div class="authErrorText">Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</div>
+    }
+</div>
+
 
 <div class="menuBox" @onclick="Register">
     <div class="menuBoxText">Register</div>
@@ -29,9 +45,9 @@
     </div>
 </NavLink>
 
-@if (!string.IsNullOrEmpty(errorMessage))
+@if (!string.IsNullOrEmpty(authService.GetErrorMessage()))
 {
-    <p style="color: red;">@errorMessage</p>
+    <div class="authErrorText">@authService.GetErrorMessage()</div>
 }
 
 @code {
@@ -39,6 +55,12 @@
     private string username;
     private string password;
     private string? errorMessage;
+
+    protected override void OnInitialized()
+    {
+        errorMessage = authService.GetErrorMessage();
+        authService.ClearErrorMessage(); // Clear the error message when the page is loaded
+    }
 
     private async Task Register()
     {
@@ -56,11 +78,6 @@
         {
             // Redirect to another page upon successful registration
             NavigationManager.NavigateTo("/");
-        }
-        else
-        {
-            // Display an error message for unsuccessful registration
-            errorMessage = "Registration failed. Please try again.";
         }
     }
 }

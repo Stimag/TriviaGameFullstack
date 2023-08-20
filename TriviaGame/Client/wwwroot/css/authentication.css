@@ -12,6 +12,14 @@
     align-items: center;
 }
 
-#authLabelText {
+.authLabelText {
     font-size: 1.4rem;
+}
+
+/* Authentication error text */
+.authErrorText {
+    color: red;
+    word-break: break-word;
+    text-align: center;
+    width: 25rem;
 }

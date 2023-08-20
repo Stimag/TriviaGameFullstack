@@ -1,7 +1,5 @@
-global using TriviaGame.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using TriviaGame.Server.Data;
-using Microsoft.AspNetCore.ResponseCompression;
 using System.Text.Json.Serialization;
 
 

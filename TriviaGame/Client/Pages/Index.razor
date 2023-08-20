@@ -6,13 +6,21 @@
 <PageTitle>Login</PageTitle>
 
 <div class="authBox">
-    <label for="email" id="authLabelText">Email</label>
+    <label for="email" class="authLabelText">Email</label>
     <input id="email" type="email" class="inputBox" @bind="@loginModel.Email" />
+    @if (!string.IsNullOrEmpty(loginModel.Email) && !authService.IsValidEmail(loginModel.Email))
+    {
+        <div class="authErrorText">Invalid symbols in email address.</div>
+    }
 </div>
 
 <div class="authBox">
-    <label for="password" id="authLabelText">Password</label>
+    <label for="password" class="authLabelText">Password</label>
     <input id="password" type="password" class="inputBox" @bind="@loginModel.Password" />
+    @if (!string.IsNullOrEmpty(loginModel.Password) && !authService.IsValidPassword(loginModel.Password))
+    {
+        <div class="authErrorText">Invalid symbols in password.</div>
+    }
 </div>
 
 <div class="menuBox" @onclick="Login">
@@ -25,14 +33,20 @@
     </div>
 </NavLink>
 
-@if (!string.IsNullOrEmpty(errorMessage))
+@if (!string.IsNullOrEmpty(authService.GetErrorMessage()))
 {
-    <p style="color: red;">@errorMessage</p>
+    <div class="authErrorText">@authService.GetErrorMessage()</div>
 }
 
 @code {
     private LoginModel loginModel = new LoginModel();
     private string? errorMessage;
+
+    protected override void OnInitialized()
+    {
+        errorMessage = authService.GetErrorMessage();
+        authService.ClearErrorMessage(); // Clear the error message when the page is loaded
+    }
 
     private async Task Login()
     {
@@ -42,10 +56,6 @@
         {
             // Redirect to another page upon successful login
             NavigationManager.NavigateTo("/mainmenu");
-        }
-        else
-        {
-            errorMessage = "Login failed. Please try again.";
         }
     }
 
