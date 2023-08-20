@@ -6,3 +6,4 @@ Highscore and general game information can be found in menus.
 
 Data will be stored in a SQL database, in contrast to the TriviaGameLocalStorage project, where data is stored in the browsers LocalStorage.  
 
+SQL database not added to Github.
