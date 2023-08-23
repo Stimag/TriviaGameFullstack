@@ -5,5 +5,4 @@ You get a score for how many questions you get through before the lives run out,
 Highscore and general game information can be found in menus.  
 
 Data will be stored in a SQL database.
-
 SQL database not added to Github.
