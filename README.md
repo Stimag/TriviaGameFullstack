@@ -4,5 +4,5 @@ Lives are lost if answer is wrong or time runs out before answering.
 You get a score for how many questions you get through before the lives run out, or when there are no more unique questions left.  
 Highscore and general game information can be found in menus.  
 
-Data will be stored in a SQL database.
+Data will be stored in a SQL database.  
 SQL database not added to Github.
