@@ -144,7 +144,7 @@ namespace TriviaGame.Client.Services
         // Input validation
         public bool IsValidEmail(string email)
         {
-            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,254}$";
             return Regex.IsMatch(email, emailPattern);
         }
 
@@ -156,7 +156,7 @@ namespace TriviaGame.Client.Services
 
         public bool IsValidPassword(string password)
         {
-            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^]).{8,}$";
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^]).{8,254}$";
             return Regex.IsMatch(password, passwordPattern);
         }
 
